@@ -1,0 +1,13 @@
+package com.github.BlackThornLabs.web;
+
+import org.springframework.boot.test.context.TestConfiguration;
+import org.springframework.boot.web.server.test.client.TestRestTemplate;
+import org.springframework.context.annotation.Bean;
+
+@TestConfiguration
+public class TestConfig {
+    @Bean
+    public TestRestTemplate testRestTemplate() {
+        return new TestRestTemplate();
+    }
+}
