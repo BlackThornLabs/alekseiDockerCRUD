@@ -4,13 +4,12 @@ import com.github.BlackThornLabs.dto.UserEventDTO;
 import com.github.BlackThornLabs.service.EmailService;
 import com.github.BlackThornLabs.service.KafkaConsumerService;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
-import org.testcontainers.containers.KafkaContainer;
+import org.testcontainers.kafka.KafkaContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 import org.testcontainers.utility.DockerImageName;
@@ -25,14 +24,14 @@ public class KafkaConsumerServiceTest {
     @Container
     static KafkaContainer kafka = new KafkaContainer(DockerImageName.parse("confluentinc/cp-kafka:7.5.0"));
 
-    @Autowired
+    @MockitoBean
     private KafkaTemplate<String, UserEventDTO> kafkaTemplate;
 
-    @Autowired
+    @MockitoBean
     private KafkaConsumerService kafkaConsumerService;
 
     @MockitoBean
-    private EmailService emailService; // Мокаем email сервис
+    private EmailService emailService;
 
     @DynamicPropertySource
     static void overrideProperties(DynamicPropertyRegistry registry) {

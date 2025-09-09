@@ -2,7 +2,6 @@ package com.github.BlackThornLabs.repository;
 
 import com.github.BlackThornLabs.AbstractIntegrationTest;
 import com.github.BlackThornLabs.model.User;
-import com.github.BlackThornLabs.repository.UserRepository;
 import com.github.BlackThornLabs.util.TestDataUtil;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
