@@ -19,11 +19,12 @@
         <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <spring-boot.version>4.0.0-M2</spring-boot.version>
+        <spring-boot.version>3.5.5</spring-boot.version>
         <lombok.version>1.18.30</lombok.version>
         <mapstruct.version>1.6.3</mapstruct.version>
         <postgresql.version>42.7.7</postgresql.version>
         <kafka.version>4.0.0-M4</kafka.version>
+        <spring-cloud.version>Finchley.SR2</spring-cloud.version>
     </properties>
 
     <dependencyManagement>

@@ -5,10 +5,10 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ConfigurableApplicationContext;
 
 @SpringBootApplication
-public class MainApplication {
+public class UserServiceApplication {
     public static void main(String[] args) {
         // Получаем контекст
-        ConfigurableApplicationContext context = SpringApplication.run(MainApplication.class, args);
+        ConfigurableApplicationContext context = SpringApplication.run(UserServiceApplication.class, args);
 
         // Получаем бин Console из контекста (если активен профиль "console")
         try {
