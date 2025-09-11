@@ -1,5 +1,7 @@
 package com.github.BlackThornLabs.service;
 
+import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
+import io.github.resilience4j.retry.annotation.Retry;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.mail.SimpleMailMessage;
@@ -13,6 +15,8 @@ public class EmailService {
 
     private final JavaMailSender mailSender;
 
+    @CircuitBreaker(name = "emailService", fallbackMethod = "sendWelcomeEmailFallback")
+    @Retry(name = "emailService", fallbackMethod = "sendWelcomeEmailFallback")
     public void sendWelcomeEmail(String email) {
         SimpleMailMessage message = new SimpleMailMessage();
         message.setTo(email);
@@ -27,6 +31,8 @@ public class EmailService {
         }
     }
 
+    @CircuitBreaker(name = "emailService", fallbackMethod = "sendWelcomeEmailFallback")
+    @Retry(name = "emailService", fallbackMethod = "sendWelcomeEmailFallback")
     public void sendGoodbyeEmail(String email) {
         SimpleMailMessage message = new SimpleMailMessage();
         message.setTo(email);
@@ -40,4 +46,14 @@ public class EmailService {
             throw e;
         }
     }
+
+    public void sendWelcomeEmailFallback(String email, Exception e) {
+        log.warn("Welcome email fallback triggered for: {}. Error: {}", email, e.getMessage());
+
+    }
+
+    public void sendGoodbyeEmailFallback(String email, Exception e) {
+        log.warn("Goodbye email fallback triggered for: {}. Error: {}", email, e.getMessage());
+    }
+
 }
