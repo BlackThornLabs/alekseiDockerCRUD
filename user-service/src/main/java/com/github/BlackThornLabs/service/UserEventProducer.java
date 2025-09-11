@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 @Slf4j
 public class UserEventProducer {
     private final KafkaTemplate<String, UserEventDTO> kafkaEventTemplate;
-    private static final String TOPIC = "UserEvent";
+    private static final String TOPIC = "user-events";
 
     public void sendUserEvent(String email, UserEventDTO.EventType eventType) {
         try {
@@ -26,5 +26,4 @@ public class UserEventProducer {
         }
 
     }
-
 }

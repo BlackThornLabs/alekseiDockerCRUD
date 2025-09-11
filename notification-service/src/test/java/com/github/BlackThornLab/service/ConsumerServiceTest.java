@@ -2,7 +2,7 @@ package com.github.BlackThornLab.service;
 
 import com.github.BlackThornLabs.dto.UserEventDTO;
 import com.github.BlackThornLabs.service.EmailService;
-import com.github.BlackThornLabs.service.KafkaConsumerService;
+import com.github.BlackThornLabs.service.ConsumerService;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.kafka.core.KafkaTemplate;
@@ -19,7 +19,7 @@ import static org.mockito.Mockito.verify;
 
 @SpringBootTest
 @Testcontainers
-public class KafkaConsumerServiceTest {
+public class ConsumerServiceTest {
 
     @Container
     static KafkaContainer kafka = new KafkaContainer(DockerImageName.parse("confluentinc/cp-kafka:7.5.0"));
@@ -28,7 +28,7 @@ public class KafkaConsumerServiceTest {
     private KafkaTemplate<String, UserEventDTO> kafkaTemplate;
 
     @MockitoBean
-    private KafkaConsumerService kafkaConsumerService;
+    private ConsumerService consumerService;
 
     @MockitoBean
     private EmailService emailService;

@@ -13,6 +13,9 @@
     <modules>
         <module>user-service</module>
         <module>notification-service</module>
+        <module>gateway-api</module>
+        <module>config-server</module>
+        <module>service-discovery</module>
     </modules>
 
     <properties>
@@ -23,7 +26,7 @@
         <lombok.version>1.18.30</lombok.version>
         <mapstruct.version>1.6.3</mapstruct.version>
         <postgresql.version>42.7.7</postgresql.version>
-        <kafka.version>4.0.0-M4</kafka.version>
+        <kafka.version>3.3.9</kafka.version>
         <spring-cloud.version>Finchley.SR2</spring-cloud.version>
     </properties>
 
