@@ -88,9 +88,9 @@ services:
       SPRING_PROFILES_ACTIVE: docker
     depends_on:
       config-server:
-        condition: service_healthy
+        condition: service_started
       service-discovery:
-        condition: service_healthy
+        condition: service_started
       postgres:
         condition: service_healthy
     networks:
@@ -105,10 +105,8 @@ services:
     environment:
       SPRING_PROFILES_ACTIVE: docker
     depends_on:
-      config-server:
-        condition: service_healthy
       service-discovery:
-        condition: service_healthy
+        condition: service_started
       kafka:
         condition: service_started
     networks:
@@ -125,9 +123,9 @@ services:
       SPRING_PROFILES_ACTIVE: docker
     depends_on:
       config-server:
-        condition: service_healthy
+        condition: service_started
       service-discovery:
-        condition: service_healthy
+        condition: service_started
       user-service:
         condition: service_started
       notification-service:
