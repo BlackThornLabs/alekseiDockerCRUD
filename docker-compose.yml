@@ -58,17 +58,17 @@ services:
       - crud-network
 
   config-server:
-
+    image: crud-service-config-server
+    environment:
+      - SPRING_PROFILES_ACTIVE=native,docker
+      - EUREKA_CLIENT_SERVICE_URL_DEFAULTZONE=http://service-discovery:8761/eureka
+    ports:
+      - "8888:8888"
+    depends_on:
+      - service-discovery
     build:
       context: /config-server/.
     container_name: config-server
-    ports:
-      - "8888:8888"
-    environment:
-      SPRING_PROFILES_ACTIVE: docker,native
-    depends_on:
-      service-discovery:
-        condition: service_healthy
     networks:
       - crud-network
 
