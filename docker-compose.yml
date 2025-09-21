@@ -1,7 +1,7 @@
 services:
   postgres:
     image: postgres:17.0-alpine
-    container_name: crud-postgres
+    container_name: postgres
     environment:
       POSTGRES_DB: user_service
       POSTGRES_USER: postgres
@@ -38,10 +38,11 @@ services:
     networks:
       - crud-network
     healthcheck:
-      test: ["CMD", "kafka-topics", "--list", "--bootstrap-server", "localhost:9092"]
-      interval: 10s
-      timeout: 5s
+      test: [ "CMD", "sh", "-c", "echo | telnet localhost 9092 2>/dev/null | grep Connected" ]
+      interval: 30s
+      timeout: 10s
       retries: 10
+      start_period: 60s
 
   service-discovery:
     build:
@@ -51,11 +52,13 @@ services:
       - "8761:8761"
     environment:
       SPRING_PROFILES_ACTIVE: docker
-    depends_on:
-      kafka:
-        condition: service_healthy
     networks:
       - crud-network
+    healthcheck:
+      test: [ "CMD", "sh", "-c", "if [ -f /tmp/application.pid ]; then exit 0; else exit 1; fi" ]
+      interval: 30s
+      timeout: 10s
+      retries: 5
 
   config-server:
     image: crud-service-config-server
@@ -64,13 +67,16 @@ services:
       - EUREKA_CLIENT_SERVICE_URL_DEFAULTZONE=http://service-discovery:8761/eureka
     ports:
       - "8888:8888"
-    depends_on:
-      - service-discovery
     build:
       context: /config-server/.
     container_name: config-server
     networks:
       - crud-network
+    healthcheck:
+      test: [ "CMD", "sh", "-c", "if [ -f /tmp/application.pid ]; then exit 0; else exit 1; fi" ]
+      interval: 30s
+      timeout: 10s
+      retries: 5
 
   user-service:
     build:
@@ -83,9 +89,9 @@ services:
     depends_on:
       config-server:
         condition: service_healthy
-      postgres:
+      service-discovery:
         condition: service_healthy
-      kafka:
+      postgres:
         condition: service_healthy
     networks:
       - crud-network
@@ -99,7 +105,11 @@ services:
     environment:
       SPRING_PROFILES_ACTIVE: docker
     depends_on:
-      user-service:
+      config-server:
+        condition: service_healthy
+      service-discovery:
+        condition: service_healthy
+      kafka:
         condition: service_started
     networks:
       - crud-network
@@ -114,6 +124,12 @@ services:
     environment:
       SPRING_PROFILES_ACTIVE: docker
     depends_on:
+      config-server:
+        condition: service_healthy
+      service-discovery:
+        condition: service_healthy
+      user-service:
+        condition: service_started
       notification-service:
         condition: service_started
     networks:
