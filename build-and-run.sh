@@ -1,18 +1,18 @@
 #!/bin/bash
 
-# Сборка всех сервисов
-echo "Building all services..."
-./mvnw clean package -DskipTests
+cd "$(dirname "$0")"|| exit
 
-# Запуск Docker Compose
-echo "Starting Docker Compose..."
+echo "Сборка проекта..."
+mvn clean package -DskipTests -Dmaven.test.skip=true
+
+if [ $? -ne 0 ]; then
+    echo "Ошибка сборки!"
+    exit 1
+fi
+
+echo "Запуск Docker Compose..."
 docker-compose up -d --build
 
-# Ожидание запуска сервисов
-echo "Waiting for services to start..."
-sleep 30
-
-# Проверка статуса сервисов
-echo "Checking services status..."
-docker-compose ps
-docker-compose logs --tail=50 user-service
+echo "Готово! Сервисы запускаются..."
+echo "Eureka: http://localhost:8761"
+echo "Gateway: http://localhost:8080"
